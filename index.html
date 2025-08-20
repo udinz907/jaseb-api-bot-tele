@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<title>Bot Telegram Jaseb Api</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #0a1a2a;
+        margin: 0;
+        padding: 0;
+        color: white;
+    }
+    .container {
+        max-width: 800px;
+        margin: auto;
+        background: #121f3d;
+        padding: 20px;
+        border-radius: 15px;
+        margin-top: 40px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.7);
+        color: white;
+    }
+    input, textarea, button {
+        padding: 12px;
+        margin: 5px 0;
+        width: 100%;
+        box-sizing: border-box;
+        border-radius: 10px;
+        border: 2px solid #ccc;
+        transition: all 0.3s ease;
+        font-size: 16px;
+        background: #1c2a48;
+        color: white;
+    }
+    textarea {
+        resize: vertical;
+        min-height: 100px;
+        max-height: 250px;
+    }
+    input:focus, textarea:focus {
+        border-color: #00bfff;
+        box-shadow: 0 0 10px #00bfff;
+        transform: scale(1.02);
+        outline: none;
+        background: #224274;
+    }
+    button {
+        background: linear-gradient(45deg, #ff416c, #ff4b2b);
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 5px #c0392b;
+        border: none;
+        font-size: 16px;
+        user-select: none;
+        transition: all 0.3s ease;
+    }
+    button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 15px rgba(0, 255, 0, 0.6);
+    }
+    button:active {
+        transform: translateY(2px);
+        box-shadow: 0 2px #c0392b;
+    }
+    #addGroupBtn {
+        background: linear-gradient(45deg, #2ecc40, #27ae60);
+        box-shadow: 0 5px #1e8449;
+    }
+    #addGroupBtn:hover {
+        box-shadow: 0 8px 20px rgba(46, 204, 64, 0.8);
+        transform: translateY(-2px);
+    }
+    #addGroupBtn:active {
+        box-shadow: 0 2px #1e8449;
+        transform: translateY(2px);
+    }
+    #autoSendBtn {
+        background: linear-gradient(45deg, #27ae60, #2ecc40);
+        box-shadow: 0 5px #1e8449;
+        margin-top: 10px;
+        font-weight: bold;
+    }
+    #autoSendBtn:hover {
+        box-shadow: 0 8px 20px rgba(46, 204, 64, 0.8);
+        transform: translateY(-2px);
+    }
+    #autoSendBtn:active {
+        box-shadow: 0 2px #1e8449;
+        transform: translateY(2px);
+    }
+    #stopAutoSendBtn {
+        background: linear-gradient(45deg, #c0392b, #e74c3c);
+        box-shadow: 0 5px #922b21;
+        margin-top: 10px;
+        font-weight: bold;
+    }
+    #stopAutoSendBtn:hover {
+        box-shadow: 0 8px 20px rgba(255, 0, 0, 0.8);
+        transform: translateY(-2px);
+    }
+    #stopAutoSendBtn:active {
+        box-shadow: 0 2px #922b21;
+        transform: translateY(2px);
+    }
+    .list {
+        background: #1c2a48;
+        padding: 10px;
+        border-radius: 5px;
+        max-height: 200px;
+        overflow-y: auto;
+        font-size: 14px;
+        color: #b0bec5;
+    }
+    .logo-container {
+        text-align: center;
+        margin-bottom: 20px;
+        user-select: none;
+    }
+    .logo-container img {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 50%;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        display: block;
+        margin: 0 auto;
+    }
+    .logo-container .logo-name {
+        margin-top: 10px;
+        font-size: 20px;
+        font-weight: bold;
+        color: #ff3b3b;
+    }
+    .logo-container .username-name {
+        margin-top: 5px;
+        font-size: 16px;
+        color: #ff3b3b;
+        font-weight: 600;
+    }
+</style>
+</head>
+<body>
+
+<div class="container" id="loginForm">
+    <div class="logo-container">
+        <img src="https://i.imghippo.com/files/WWNm7841Ekk.jpeg" alt="Logo" border="0">
+        <div class="logo-name">GUSTAF JASEB</div>
+        <div class="username-name">API</div>
+    </div>
+    <h2>🔐 Login untuk Akses Bot</h2>
+    <input type="text" id="username" placeholder="Username" />
+    <input type="password" id="password" placeholder="Password" />
+    <button onclick="checkLogin()">Login</button>
+</div>
+
+<div class="container" id="botContainer" style="display:none;">
+    <div class="logo-container">
+        <img src="https://i.imghippo.com/files/WWNm7841Ekk.jpeg" alt="Logo" border="0">
+        <div class="logo-name">GUSTAF JASEB API</div>
+        <div class="username-name" id="userDisplayName">Gustafhostingdev</div>
+    </div>
+    <h2>📢 Bot Telegram Jaseb Api</h2>
+    <button onclick="logout()" style="background:gray; margin-bottom:15px;">Logout</button>
+
+    <label>Token Bot Telegram:</label>
+    <input type="text" id="token" placeholder="Masukkan token bot" />
+    <button onclick="saveToken()">SIMPAN TOKEN</button>
+    <button onclick="hapusToken()">HAPUS TOKEN</button>
+
+    <label>Masukkan ID Group Telegram:</label>
+    <textarea id="groupId" placeholder="Masukkan hingga 10000 ID group"></textarea>
+    <button id="addGroupBtn" onclick="addGroup()">ADD GROUP ID</button>
+    <button onclick="removeGroup()">HAPUS GROUP ID</button>
+
+    <label>📂 Upload File .txt (ID Group):</label>
+    <input type="file" id="fileInput" accept=".txt" onchange="loadFromFile()" />
+
+    <div class="list" id="groupList"></div>
+
+    <label>Pesan Teks:</label>
+    <textarea id="message" placeholder="Masukkan pesan panjang"></textarea>
+
+    <label>Foto (opsional):</label>
+    <input type="file" id="photo" accept="image/*" />
+
+    <button onclick="sendMessage()">SHARE GROUP</button>
+    <button id="autoSendBtn" onclick="startAutoSend()">AUTO KIRIM</button>
+    <button id="stopAutoSendBtn" onclick="stopAutoSend()" style="display:none;">STOP AUTO</button>
+    <div id="autoSendStatus" style="margin-top:10px; font-weight:bold; color:#00ff00;"></div>
+</div>
+<script src="script.js" defer></script>
+</body>
+</html>
